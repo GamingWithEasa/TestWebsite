@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skyward Explorers - Aviation Club</title>
+  
+  <!-- Include React and ReactDOM from CDN -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  
+  <!-- Include Framer Motion from CDN -->
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+  
+  <!-- Include Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Include Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Include Babel for JSX support -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  
+  <style>
+    /* Base Tailwind styles */
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+    
+    /* Custom CSS */
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    
+    /* Animation keyframes */
+    @keyframes twinkle {
+      0% { opacity: 0; }
+      50% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    
+    .stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url("https://raw.githubusercontent.com/rajatsehgal/image-assets/main/stars.png") repeat;
+      z-index: 0;
+    }
+    
+    .twinkling {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url("https://raw.githubusercontent.com/rajatsehgal/image-assets/main/twinkling.png") repeat;
+      z-index: 1;
+      animation: twinkle 10s linear infinite;
+    }
+    
+    .glow-text {
+      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #0ff, 0 0 70px #0ff, 0 0 80px #0ff, 0 0 100px #0ff, 0 0 150px #0ff;
+    }
+    
+    .hover\:shadow-glow:hover {
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+    }
+    
+    /* Aviation Club Styles */
+    .glow-title {
+      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #0ff, 0 0 70px #0ff, 0 0 80px #0ff, 0 0 100px #0ff, 0 0 150px #0ff;
+      animation: neon-pulse 3s infinite;
+    }
+    
+    .text-glow {
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.8), 0 0 12px rgba(100, 181, 246, 0.6);
+    }
+    
+    .text-glow-sm {
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+    }
+    
+    .hover\:shadow-blue:hover {
+      box-shadow: 0 0 15px rgba(100, 181, 246, 0.7);
+    }
+    
+    @keyframes neon-pulse {
+      0% {
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #0ff, 0 0 70px #0ff, 0 0 80px #0ff;
+      }
+      50% {
+        text-shadow: 0 0 15px #fff, 0 0 25px #fff, 0 0 35px #fff, 0 0 45px #0ff, 0 0 75px #0ff, 0 0 85px #0ff, 0 0 105px #0ff, 0 0 155px #0ff;
+      }
+      100% {
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #0ff, 0 0 70px #0ff, 0 0 80px #0ff;
+      }
+    }
+    
+    /* Replace the current pulse animation with the new neon-pulse */
+    @keyframes pulse {
+      0%, 100% {
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #0ff, 0 0 70px #0ff, 0 0 80px #0ff;
+      }
+      50% {
+        text-shadow: 0 0 15px #fff, 0 0 25px #fff, 0 0 35px #fff, 0 0 45px #0ff, 0 0 75px #0ff, 0 0 85px #0ff, 0 0 105px #0ff, 0 0 155px #0ff;
+      }
+    }
+    
+    /* Cloud animations */
+    .clouds-container {
+      overflow: hidden;
+    }
+    
+    .cloud {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      filter: blur(20px);
+    }
+    
+    .cloud-1 {
+      width: 200px;
+      height: 100px;
+      top: 10%;
+      left: -10%;
+      animation: cloud-move-1 80s linear infinite;
+    }
+    
+    .cloud-2 {
+      width: 300px;
+      height: 150px;
+      top: 30%;
+      left: -15%;
+      animation: cloud-move-2 120s linear infinite;
+    }
+    
+    .cloud-3 {
+      width: 250px;
+      height: 125px;
+      top: 60%;
+      left: -12%;
+      animation: cloud-move-3 100s linear infinite;
+    }
+    
+    .cloud-4 {
+      width: 180px;
+      height: 90px;
+      top: 80%;
+      left: -9%;
+      animation: cloud-move-4 90s linear infinite;
+    }
+    
+    @keyframes cloud-move-1 {
+      0% { left: -10%; }
+      100% { left: 110%; }
+    }
+    
+    @keyframes cloud-move-2 {
+      0% { left: -15%; }
+      100% { left: 110%; }
+    }
+    
+    @keyframes cloud-move-3 {
+      0% { left: -12%; }
+      100% { left: 110%; }
+    }
+    
+    @keyframes cloud-move-4 {
+      0% { left: -9%; }
+      100% { left: 110%; }
+    }
+    
+    /* Paper plane animation */
+    .paper-plane {
+      filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    /* Button styles */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.375rem;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 150ms;
+    }
+    
+    .btn-primary {
+      background-color: #2563eb;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: #1d4ed8;
+    }
+    
+    /* Card styles */
+    .card {
+      border-radius: 0.5rem;
+      overflow: hidden;
+      transition-property: all;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 300ms;
+    }
+  </style>
+  
+  <!-- Configure Tailwind -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {},
+      },
+    }
+  </script>
+</head>
+<body>
+  <div id="root"></div>
+  
+  <script type="text/babel">
+    // Import necessary components from libraries
+    const { useState, useEffect, useRef, useCallback, Fragment } = React;
+    const { motion, AnimatePresence } = window.framerMotion;
+    const { createRoot } = ReactDOM;
+    
+    // Create icons from Lucide
+    const createIcon = (name) => {
+      return (props) => {
+        const { size = 24, color = 'currentColor', strokeWidth = 2, className = '', ...otherProps } = props;
+        return React.createElement('i', {
+          className: `lucide lucide-${name} ${className}`,
+          ...otherProps,
+          'data-lucide': name,
+        });
+      };
+    };
+    
+    // Define icons
+    const Plane = createIcon('plane');
+    const Users = createIcon('users');
+    const Calendar = createIcon('calendar');
+    const Award = createIcon('award');
+    const Info = createIcon('info');
+    const ChevronDown = createIcon('chevron-down');
+    const ChevronUp = createIcon('chevron-up');
+    
+    // Initialize Lucide icons after render
+    useEffect(() => {
+      lucide.createIcons();
+    }, []);
+    
+    // PaperPlane Component
+    function PaperPlane({ position, rotation, mousePosition, onClick }) {
+      const [planePosition, setPlanePosition] = useState(position);
+      const [planeRotation, setPlaneRotation] = useState(rotation);
+      const [isHovered, setIsHovered] = useState(false);
+      
+      // Use refs to track previous values to avoid unnecessary updates
+      const prevMousePosition = useRef(mousePosition);
+      const animationFrameId = useRef(null);
+      
+      // Respond to mouse proximity
+      useEffect(() => {
+        // Skip if mouse hasn't moved significantly
+        if (
+          Math.abs(prevMousePosition.current.x - mousePosition.x) < 5 &&
+          Math.abs(prevMousePosition.current.y - mousePosition.y) < 5
+        ) {
+          return;
+        }
+        
+        prevMousePosition.current = mousePosition;
+        
+        // Cancel any pending animation frame
+        if (animationFrameId.current !== null) {
+          cancelAnimationFrame(animationFrameId.current);
+        }
+        
+        // Use requestAnimationFrame for smoother updates
+        animationFrameId.current = requestAnimationFrame(() => {
+          // Don't update position when hovered
+          if (isHovered) {
+            setPlanePosition(position);
+            setPlaneRotation(rotation);
+            return;
+          }
+          
+          // Convert percentage positions to approximate pixel values for calculation
+          const planeX = (Number.parseFloat(position.x) * window.innerWidth) / 100;
+          const planeY = (Number.parseFloat(position.y) * window.innerHeight) / 100;
+          
+          // Calculate distance between mouse and plane
+          const dx = mousePosition.x - planeX;
+          const dy = mousePosition.y - planeY;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          // If mouse is close, adjust plane position slightly
+          if (distance < 200) {
+            // Calculate repulsion vector (move away from mouse)
+            const repulsionFactor = 0.1;
+            const repulsionX = (dx / distance) * repulsionFactor * -1;
+            const repulsionY = (dy / distance) * repulsionFactor * -1;
+            
+            // Update position with repulsion
+            const newX = Number.parseFloat(position.x) + repulsionX;
+            const newY = Number.parseFloat(position.y) + repulsionY;
+            
+            // Calculate new rotation to face away from mouse
+            const newRotation = Math.atan2(dy, dx) * (180 / Math.PI) + 180;
+            
+            setPlanePosition({
+              x: `${newX}%`,
+              y: `${newY}%`,
+            });
+            setPlaneRotation(newRotation);
+          } else {
+            // Return to original path if not influenced by mouse
+            setPlanePosition(position);
+            setPlaneRotation(rotation);
+          }
+        });
+        
+        // Cleanup animation frame on unmount or dependency change
+        return () => {
+          if (animationFrameId.current !== null) {
+            cancelAnimationFrame(animationFrameId.current);
+          }
+        };
+      }, [mousePosition, position, rotation, isHovered]);
+      
+      return (
+        <motion.div
+          className="absolute z-10 cursor-pointer"
+          style={{
+            left: planePosition.x,
+            top: planePosition.y,
+            transform: `rotate(${planeRotation}deg)`,
+          }}
+          animate={{
+            scale: isHovered ? 1.5 : 1,
+            filter: isHovered ? "drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))" : "none",
+          }}
+          transition={{ duration: 0.3 }}
+          onHoverStart={() => setIsHovered(true)}
+          onHoverEnd={() => setIsHovered(false)}
+          onClick={onClick}
+        >
+          <svg
+            width="30"
+            height="30"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="paper-plane"
+          >
+            <path
+              d="M21.7 2.3C21.5 2.1 21.2 2 21 2C20.9 2 20.8 2 20.7 2.1L2.7 9.1C2.3 9.2 2.1 9.6 2 10C2 10.4 2.2 10.7 2.6 10.9L8 13.4V19C8 19.4 8.2 19.8 8.6 19.9C8.7 20 8.8 20 9 20C9.3 20 9.5 19.9 9.7 19.7L12.6 16.8L16.6 19.2C16.8 19.3 16.9 19.3 17.1 19.3C17.2 19.3 17.4 19.3 17.5 19.2C17.8 19.1 18 18.8 18 18.5V3C18 2.8 17.9 2.5 17.7 2.3Z"
+              fill={isHovered ? "#FFFFFF" : "#E0E0E0"}
+            />
+          </svg>
+          
+          {isHovered && (
+            <motion.div
+              className="absolute top-8 left-0 bg-white/90 text-blue-800 p-2 rounded-md whitespace-nowrap text-xs font-medium"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              style={{ transform: "rotate(0deg)" }}
+            >
+              Click to see activities!
+            </motion.div>
+          )}
+        </motion.div>
+      );
+    }
+    
+    // Button Component
+    function Button({ children, className, onClick }) {
+      return (
+        <button 
+          className={`btn btn-primary ${className}`}
+          onClick={onClick}
+        >
+          {children}
+        </button>
+      );
+    }
+    
+    // Card Component
+    function Card({ children, className }) {
+      return (
+        <div className={`card bg-white/90 backdrop-blur-sm hover:shadow-blue p-6 transition-all duration-300 ${className}`}>
+          {children}
+        </div>
+      );
+    }
+    
+    // Main Aviation Club Component
+    function AviationClub() {
+      const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+      const [expandedSection, setExpandedSection] = useState("about");
+      const containerRef = useRef(null);
+      const [planes, setPlanes] = useState([]);
+      const animationFrameId = useRef(null);
+      const lastUpdateTime = useRef(Date.now());
+      
+      // Track mouse position with throttling
+      useEffect(() => {
+        const handleMouseMove = (e) => {
+          if (containerRef.current) {
+            // Throttle mouse position updates
+            const now = Date.now();
+            if (now - lastUpdateTime.current < 50) {
+              // Only update every 50ms
+              return;
+            }
+            lastUpdateTime.current = now;
+            
+            const rect = containerRef.current.getBoundingClientRect();
+            setMousePosition({
+              x: e.clientX - rect.left,
+              y: e.clientY - rect.top,
+            });
+          }
+        };
+        
+        window.addEventListener("mousemove", handleMouseMove);
+        return () => window.removeEventListener("mousemove", handleMouseMove);
+      }, []);
+      
+      // Generate initial paper planes
+      useEffect(() => {
+        const initialPlanes = Array.from({ length: 8 }, (_, i) => ({
+          id: i,
+          x: Math.random() * 100,
+          y: Math.random() * 100,
+          rotation: Math.random() * 360,
+          speed: 0.5 + Math.random() * 1.5,
+        }));
+        setPlanes(initialPlanes);
+        
+        // Animation loop for plane movement using requestAnimationFrame
+        const updatePlanes = () => {
+          setPlanes((prevPlanes) =>
+            prevPlanes.map((plane) => ({
+              ...plane,
+              x: (plane.x + plane.speed * 0.05) % 100, // Reduced speed factor
+              y: plane.y + Math.sin(plane.x / 10) * 0.01, // Reduced movement
+              rotation: plane.rotation + plane.speed * 0.1, // Reduced rotation speed
+            })),
+          );
+          
+          animationFrameId.current = requestAnimationFrame(updatePlanes);
+        };
+        
+        animationFrameId.current = requestAnimationFrame(updatePlanes);
+        
+        return () => {
+          if (animationFrameId.current !== null) {
+            cancelAnimationFrame(animationFrameId.current);
+          }
+        };
+      }, []);
+      
+      const toggleSection = useCallback((section) => {
+        setExpandedSection((prev) => (prev === section ? null : section));
+      }, []);
+      
+      const clubActivities = [
+        { name: "Flight Simulator Sessions", description: "Practice flying with our state-of-the-art simulators" },
+        { name: "Model Aircraft Building", description: "Design and build your own model planes" },
+        { name: "Aviation History", description: "Learn about the pioneers of flight and aviation milestones" },
+        { name: "Field Trips", description: "Visit local airports and aviation museums" },
+        { name: "Guest Speakers", description: "Meet pilots and aviation professionals" },
+      ];
+      
+      return (
+        <div
+          ref={containerRef}
+          className="min-h-screen bg-gradient-to-b from-sky-700 via-sky-500 to-blue-300 relative overflow-hidden"
+        >
+          {/* Animated clouds background */}
+          <div className="clouds-container absolute inset-0 z-0">
+            <div className="cloud cloud-1"></div>
+            <div className="cloud cloud-2"></div>
+            <div className="cloud cloud-3"></div>
+            <div className="cloud cloud-4"></div>
+          </div>
+          
+          {/* Flying paper planes */}
+          {planes.map((plane) => (
+            <PaperPlane
+              key={plane.id}
+              position={{ x: `${plane.x}%`, y: `${plane.y}%` }}
+              rotation={plane.rotation}
+              mousePosition={mousePosition}
+              onClick={() => toggleSection("activities")}
+            />
+          ))}
+          
+          <div className="container mx-auto px-4 py-12 relative z-10">
+            {/* Glowing title */}
+            <motion.div
+              initial={{ opacity: 0, y: -50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.2 }}
+              className="text-center mb-16"
+            >
+              <h1 className="text-5xl md:text-7xl font-bold mb-4 text-cyan-100 glow-title">Skyward Explorers</h1>
+              <p className="text-xl md:text-2xl text-white text-glow">High School Aviation Club</p>
+            </motion.div>
+            
+            {/* Main content */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+              {/* About section */}
+              <Card className="col-span-1 md:col-span-3">
+                <div className="flex items-center justify-between cursor-pointer" onClick={() => toggleSection("about")}>
+                  <div className="flex items-center">
+                    <Info className="mr-2 h-6 w-6 text-blue-600" />
+                    <h2 className="text-2xl font-bold text-blue-800">About Our Club</h2>
+                  </div>
+                  {expandedSection === "about" ? (
+                    <ChevronUp className="h-6 w-6 text-blue-600" />
+                  ) : (
+                    <ChevronDown className="h-6 w-6 text-blue-600" />
+                  )}
+                </div>
+                
+                <AnimatePresence>
+                  {expandedSection === "about" && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden"
+                    >
+                      <p className="mt-4 text-gray-700">
+                        Welcome to Skyward Explorers, where we fuel the passion for aviation in young minds! Our club is
+                        dedicated to introducing high school students to the exciting world of flight through hands-on
+                        activities, educational experiences, and fun social events.
+                      </p>
+                      <p className="mt-2 text-gray-700">
+                        Whether you dream of becoming a pilot, aerospace engineer, or simply have a curiosity about how
+                        planes work, our club offers something for everyone. No prior experience necessary—just bring your
+                        enthusiasm and willingness to learn!
+                      </p>
+                      <div className="mt-4 flex justify-center">
+                        <Button
+                          className="bg-blue-600 hover:bg-blue-700 text-white"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleSection("join");
+                          }}
+                        >
+                          Join Us Today
+                        </Button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </Card>
+              
+              {/* Activities section */}
+              <Card className="col-span-1 md:col-span-2">
+                <div
+                  className="flex items-center justify-between cursor-pointer"
+                  onClick={() => toggleSection("activities")}
+                >
+                  <div className="flex items-center">
+                    <Plane className="mr-2 h-6 w-6 text-blue-600" />
+                    <h2 className="text-2xl font-bold text-blue-800">Club Activities</h2>
+                  </div>
+                  {expandedSection === "activities" ? (
+                    <ChevronUp className="h-6 w-6 text-blue-600" />
+                  ) : (
+                    <ChevronDown className="h-6 w-6 text-blue-600" />
+                  )}
+                </div>
+                
+                <AnimatePresence>
+                  {expandedSection === "activities" && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {clubActivities.map((activity, index) => (
+                          <motion.div
+                            key={activity.name}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.1 }}
+                            className="bg-blue-50 p-4 rounded-lg hover:bg-blue-100 transition-colors"
+                          >
+                            <h3 className="font-semibold text-blue-700">{activity.name}</h3>
+                            <p className="text-sm text-gray-600">{activity.description}</p>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </Card>
+              
+              {/* Events section */}
+              <Card className="col-span-1">
+                <div className="flex items-center justify-between cursor-pointer" onClick={() => toggleSection("events")}>
+                  <div className="flex items-center">
+                    <Calendar className="mr-2 h-6 w-6 text-blue-600" />
+                    <h2 className="text-2xl font-bold text-blue-800">Upcoming Events</h2>
+                  </div>
+                  {expandedSection === "events" ? (
+                    <ChevronUp className="h-6 w-6 text-blue-600" />
+                  ) : (
+                    <ChevronDown className="h-6 w-6 text-blue-600" />
+                  )}
+                </div>
+                
+                <AnimatePresence>
+                  {expandedSection === "events" && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden"
+                    >
+                      <ul className="mt-4 space-y-3">
+                        <li className="border-l-4 border-blue-500 pl-3 py-1">
+                          <span className="block text-blue-800 font-medium">Airport Field Trip</span>
+                          <span className="text-sm text-gray-600">September 15, 2023</span>
+                        </li>
+                        <li className="border-l-4 border-blue-500 pl-3 py-1">
+                          <span className="block text-blue-800 font-medium">Guest Speaker: Air Traffic Controller</span>
+                          <span className="text-sm text-gray-600">October 5, 2023</span>
+                        </li>
+                        <li className="border-l-4 border-blue-500 pl-3 py-1">
+                          <span className="block text-blue-800 font-medium">Paper Airplane Competition</span>
+                          <span className="text-sm text-gray-600">October 20, 2023</span>
+                        </li>
+                        <li className="border-l-4 border-blue-500 pl-3 py-1">
+                          <span className="block text-blue-800 font-medium">Aviation Movie Night</span>
+                          <span className="text-sm text-gray-600">November 10, 2023</span>
+                        </li>
+                      </ul>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </Card>
+              
+              {/* Join section */}
+              <Card className="col-span-1 md:col-span-3">
+                <div className="flex items-center justify-between cursor-pointer" onClick={() => toggleSection("join")}>
+                  <div className="flex items-center">
+                    <Users className="mr-2 h-6 w-6 text-blue-600" />
+                    <h2 className="text-2xl font-bold text-blue-800">Join Skyward Explorers</h2>
+                  </div>
+                  {expandedSection === "join" ? (
+                    <ChevronUp className="h-6 w-6 text-blue-600" />
+                  ) : (
+                    <ChevronDown className="h-6 w-6 text-blue-600" />
+                  )}
+                </div>
+                
+                <AnimatePresence>
+                  {expandedSection === "join" && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                          <h3 className="text-xl font-semibold text-blue-700 mb-3">Member Benefits</h3>
+                          <ul className="space-y-2">
+                            <li className="flex items-start">
+                              <Award className="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
+                              <span className="text-gray-700">Access to flight simulators and equipment</span>
+                            </li>
+                            <li className="flex items-start">
+                              <Award className="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
+                              <span className="text-gray-700">
+                                Exclusive field trips to airports and aviation facilities
+                              </span>
+                            </li>
+                            <li className="flex items-start">
+                              <Award className="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
+                              <span className="text-gray-700">Networking with aviation professionals</span>
+                            </li>
+                            <li className="flex items-start">
+                              <Award className="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
+                              <span className="text-gray-700">Hands-on experience with aircraft principles</span>
+                            </li>
+                            <li className="flex items-start">
+                              <Award className="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
+                              <span className="text-gray-700">Club t-shirt and membership card</span>
+                            </li>
+                          </ul>
+                        </div>
+
+                        <div className="bg-blue-50 p-6 rounded-lg">
+                          <h3 className="text-xl font-semibold text-blue-700 mb-3">How to Join</h3>
+                          <p className="text-gray-700 mb-4">
+                            We meet every Thursday after school in Room 305. New members are always welcome!
+                          </p>
+                          <div className="space-y-4">
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
+                              <input
+                                type="text"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="Enter your name"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                              <input
+                                type="email"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="Enter your email"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">Grade Level</label>
+                              <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>Select your grade</option>
+                                <option>Freshman</option>
+                                <option>Sophomore</option>
+                                <option>Junior</option>
+                                <option>Senior</option>
+                              </select>
+                            </div>
+                            <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                              Submit Interest Form
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </Card>
+            </div>
+
+            {/* Footer */}
+            <footer className="text-center text-white text-glow-sm mt-8">
+              <p>© {new Date().getFullYear()} Skyward Explorers Aviation Club | Lincoln High School</p>
+              <p className="text-sm mt-1">Contact: aviationclub@lincolnhigh.edu | Room 305</p>
+              <p className="text-xs mt-4">Click on the flying paper planes to discover more about our activities!</p>
+            </footer>
+          </div>
+        </div>
+      );
+    }
+    
+    // Render the app
+    const root = createRoot(document.getElementById('root'));
+    root.render(<AviationClub />);
+  </script>
+</body>
+</html>
+
